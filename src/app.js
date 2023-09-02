@@ -15,16 +15,18 @@ server.use(bodyParser.json({ limit: "50mb" }));
 server.use(cookieParser());
 server.use(morgan("dev"));
 server.use((req, res, next) => {
-  // Permitir requests desde localhost:3000 cuando estés en desarrollo
   const allowedOrigins = ["http://localhost:3000"];
 
-  // Permitir requests desde el dominio de Vercel cuando estés en producción
   if (process.env.NODE_ENV === "production") {
-    //https://pifront-lucasaonzo.vercel.app/videogames
-    allowedOrigins.push("https://pifront-lucasaonzo.vercel.app/videogames");
+    allowedOrigins.push("https://pifront-lucasaonzo.vercel.app");
   }
 
-  res.header("Access-Control-Allow-Origin", allowedOrigins);
+  // Verificar si el origen de la solicitud está en allowedOrigins
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.header("Access-Control-Allow-Origin", origin);
+  }
+
   res.header("Access-Control-Allow-Credentials", "true");
   res.header(
     "Access-Control-Allow-Headers",
