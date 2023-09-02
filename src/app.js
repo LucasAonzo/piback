@@ -15,13 +15,11 @@ server.use(bodyParser.json({ limit: "50mb" }));
 server.use(cookieParser());
 server.use(morgan("dev"));
 server.use((req, res, next) => {
-  const allowedOrigins = ["http://localhost:3000"];
+  const allowedOrigins = [
+    "http://localhost:3000",
+    "https://pifront-lucasaonzo.vercel.app",
+  ];
 
-  if (process.env.NODE_ENV === "production") {
-    allowedOrigins.push("https://pifront-lucasaonzo.vercel.app");
-  }
-
-  // Verificar si el origen de la solicitud está en allowedOrigins
   const origin = req.headers.origin;
   if (allowedOrigins.includes(origin)) {
     res.header("Access-Control-Allow-Origin", origin);
